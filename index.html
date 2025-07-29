@@ -1,0 +1,1822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WITS - Winnipeg Institute of Technology School</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 1rem;
+        }
+
+        .nav-links li {
+            position: relative;
+        }
+
+        .nav-links > li > a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            display: block;
+        }
+
+        .nav-links > li > a:hover {
+            color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        /* Dropdown Styles */
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            min-width: 250px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            border-radius: 8px;
+            padding: 10px 0;
+            z-index: 1001;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .dropdown-content a {
+            color: #333 !important;
+            padding: 12px 20px;
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .dropdown-content a:hover {
+            background: rgba(102, 126, 234, 0.1);
+            border-left-color: #667eea;
+            color: #667eea !important;
+        }
+
+        .dropdown-content .dropdown-header {
+            padding: 8px 20px;
+            font-weight: bold;
+            color: #667eea;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 5px;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #333;
+        }
+
+        /* Page Content */
+        .page-content {
+            display: none;
+            margin-top: 80px;
+            padding: 40px 0;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .page-content.active {
+            display: block;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        /* Hero Section */
+        .hero {
+            margin-top: 80px;
+            padding: 100px 0;
+            text-align: center;
+            color: white;
+        }
+
+        .hero.page-content {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 15px 40px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            animation: fadeInUp 1s ease 0.4s both;
+            cursor: pointer;
+        }
+
+        .cta-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Programs Grid */
+        .programs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .program-card {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eeff 100%);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(102, 126, 234, 0.1);
+            cursor: pointer;
+        }
+
+        .program-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .program-card h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+
+        .program-card p {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .program-duration {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: inline-block;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .program-details {
+            display: none;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(102, 126, 234, 0.2);
+        }
+
+        .program-details.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        .program-details h4 {
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+
+        .program-details ul {
+            margin-left: 1rem;
+            color: #666;
+        }
+
+        /* Form Styles */
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #f8f9ff;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 2px solid #e1e5e9;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .submit-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Student Dashboard */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .dashboard-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            border-left: 4px solid #667eea;
+        }
+
+        .dashboard-card h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .grade-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .grade-item:last-child {
+            border-bottom: none;
+        }
+
+        .grade {
+            font-weight: bold;
+            color: #28a745;
+        }
+
+        /* Table Styles */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 2rem;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .data-table th {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .data-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .data-table tr:hover {
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        /* News Cards */
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .news-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .news-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .news-date {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 1rem;
+            font-weight: bold;
+        }
+
+        .news-content {
+            padding: 1.5rem;
+        }
+
+        .news-content h3 {
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        /* Footer */
+        footer {
+            background: #2c3e50;
+            color: white;
+            padding: 3rem 0 1rem;
+            margin-top: 2rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: #667eea;
+        }
+
+        .footer-section a {
+            color: #bdc3c7;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: #667eea;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #34495e;
+            color: #bdc3c7;
+        }
+
+        /* Success Message */
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border: 1px solid #c3e6cb;
+            display: none;
+        }
+
+        .success-message.show {
+            display: block;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                max-height: 0;
+            }
+            to {
+                opacity: 1;
+                max-height: 200px;
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .mobile-menu-toggle {
+                display: block;
+            }
+            
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: white;
+                flex-direction: column;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+                padding: 1rem 0;
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .programs-grid,
+            .dashboard-grid,
+            .news-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">WITS</div>
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#" onclick="showPage('home')">Home</a></li>
+                <li class="dropdown">
+                    <a href="#">Programs ▼</a>
+                    <div class="dropdown-content">
+                        <div class="dropdown-header">Academic Programs</div>
+                        <a href="#" onclick="showPage('programs')">All Programs</a>
+                        <a href="#" onclick="showPage('programs'); scrollToProgram('network')">Network Administration</a>
+                        <a href="#" onclick="showPage('programs'); scrollToProgram('cybersecurity')">Cybersecurity</a>
+                        <a href="#" onclick="showPage('programs'); scrollToProgram('cloud')">Cloud Computing</a>
+                        <a href="#" onclick="showPage('programs'); scrollToProgram('software')">Software Development</a>
+                        <a href="#" onclick="showPage('programs'); scrollToProgram('support')">IT Support</a>
+                        <a href="#" onclick="showPage('programs'); scrollToProgram('data')">Data Analytics</a>
+                    </div>
+                </li>
+                <li class="dropdown">
+                    <a href="#">Admissions ▼</a>
+                    <div class="dropdown-content">
+                        <div class="dropdown-header">Apply Today</div>
+                        <a href="#" onclick="showPage('apply')">Application Form</a>
+                        <a href="#" onclick="showPage('requirements')">Requirements</a>
+                        <a href="#" onclick="showPage('tuition')">Tuition & Fees</a>
+                        <a href="#" onclick="showPage('scholarships')">Scholarships</a>
+                    </div>
+                </li>
+                <li class="dropdown">
+                    <a href="#">Campus ▼</a>
+                    <div class="dropdown-content">
+                        <div class="dropdown-header">Campus Life</div>
+                        <a href="#" onclick="showPage('facilities')">Facilities</a>
+                        <a href="#" onclick="showPage('labs')">Lab Information</a>
+                        <a href="#" onclick="showPage('events')">Events</a>
+                        <a href="#" onclick="showPage('clubs')">Student Clubs</a>
+                    </div>
+                </li>
+                <li class="dropdown">
+                    <a href="#">Student Portal ▼</a>
+                    <div class="dropdown-content">
+                        <div class="dropdown-header">Student Services</div>
+                        <a href="#" onclick="showPage('login')">Login</a>
+                        <a href="#" onclick="showPage('dashboard')">Dashboard Demo</a>
+                        <a href="#" onclick="showPage('grades')">Grades</a>
+                        <a href="#" onclick="showPage('schedule')">Schedule</a>
+                    </div>
+                </li>
+                <li><a href="#" onclick="showPage('news')">News</a></li>
+                <li><a href="#" onclick="showPage('contact')">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- HOME PAGE -->
+    <section id="home" class="page-content hero active">
+        <div class="container">
+            <h1>Winnipeg Institute of Technology School</h1>
+            <p>Empowering the Next Generation of IT Professionals</p>
+            <button class="cta-button" onclick="showPage('programs')">Explore Programs</button>
+        </div>
+    </section>
+
+    <!-- PROGRAMS PAGE -->
+    <section id="programs" class="page-content">
+        <div class="container">
+            <h2 class="section-title">Our Programs</h2>
+            <div class="programs-grid">
+                <div class="program-card" id="network" onclick="toggleProgramDetails('network-details')">
+                    <h3>Network Administration</h3>
+                    <span class="program-duration">2 Years • 60 Credits</span>
+                    <p>Master the fundamentals of network infrastructure, including routing, switching, and wireless technologies. Learn to design, implement, and manage enterprise networks.</p>
+                    <div class="program-details" id="network-details">
+                        <h4>Course Highlights:</h4>
+                        <ul>
+                            <li>Cisco CCNA Certification Prep</li>
+                            <li>Network Security Implementation</li>
+                            <li>Wireless Network Design</li>
+                            <li>Server Administration</li>
+                            <li>Capstone Network Project</li>
+                        </ul>
+                        <h4>Career Opportunities:</h4>
+                        <ul>
+                            <li>Network Administrator</li>
+                            <li>Systems Administrator</li>
+                            <li>IT Support Specialist</li>
+                            <li>Network Technician</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="program-card" id="cybersecurity" onclick="toggleProgramDetails('cyber-details')">
+                    <h3>Cybersecurity</h3>
+                    <span class="program-duration">2 Years • 60 Credits</span>
+                    <p>Develop expertise in protecting digital assets and infrastructure. Cover ethical hacking, incident response, and security frameworks to become a cybersecurity professional.</p>
+                    <div class="program-details" id="cyber-details">
+                        <h4>Course Highlights:</h4>
+                        <ul>
+                            <li>Ethical Hacking & Penetration Testing</li>
+                            <li>Digital Forensics</li>
+                            <li>Security Risk Assessment</li>
+                            <li>Incident Response</li>
+                            <li>CompTIA Security+ Prep</li>
+                        </ul>
+                        <h4>Career Opportunities:</h4>
+                        <ul>
+                            <li>Cybersecurity Analyst</li>
+                            <li>Security Consultant</li>
+                            <li>Penetration Tester</li>
+                            <li>IT Security Manager</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="program-card" id="cloud" onclick="toggleProgramDetails('cloud-details')">
+                    <h3>Cloud Computing</h3>
+                    <span class="program-duration">18 Months • 45 Credits</span>
+                    <p>Learn to design and manage cloud-based solutions using AWS, Azure, and Google Cloud. Focus on scalability, security, and cost optimization in cloud environments.</p>
+                    <div class="program-details" id="cloud-details">
+                        <h4>Course Highlights:</h4>
+                        <ul>
+                            <li>AWS Solutions Architect</li>
+                            <li>Microsoft Azure Administration</li>
+                            <li>Cloud Security & Compliance</li>
+                            <li>DevOps & Automation</li>
+                            <li>Container Technologies (Docker/Kubernetes)</li>
+                        </ul>
+                        <h4>Career Opportunities:</h4>
+                        <ul>
+                            <li>Cloud Solutions Architect</li>
+                            <li>DevOps Engineer</li>
+                            <li>Cloud Security Specialist</li>
+                            <li>Site Reliability Engineer</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="program-card" id="software" onclick="toggleProgramDetails('software-details')">
+                    <h3>Software Development</h3>
+                    <span class="program-duration">2 Years • 60 Credits</span>
+                    <p>Build modern applications using current programming languages and frameworks. Emphasis on full-stack development, databases, and agile methodologies.</p>
+                    <div class="program-details" id="software-details">
+                        <h4>Course Highlights:</h4>
+                        <ul>
+                            <li>Full-Stack Web Development</li>
+                            <li>Mobile App Development</li>
+                            <li>Database Design & Management</li>
+                            <li>Agile Development Practices</li>
+                            <li>Software Testing & Quality Assurance</li>
+                        </ul>
+                        <h4>Career Opportunities:</h4>
+                        <ul>
+                            <li>Software Developer</li>
+                            <li>Web Developer</li>
+                            <li>Mobile App Developer</li>
+                            <li>Database Developer</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="program-card" id="support" onclick="toggleProgramDetails('support-details')">
+                    <h3>IT Support Specialist</h3>
+                    <span class="program-duration">1 Year • 30 Credits</span>
+                    <p>Gain hands-on experience in troubleshooting, system administration, and user support. Perfect foundation for entry-level IT positions.</p>
+                    <div class="program-details" id="support-details">
+                        <h4>Course Highlights:</h4>
+                        <ul>
+                            <li>Hardware & Software Troubleshooting</li>
+                            <li>Help Desk Operations</li>
+                            <li>Windows & Linux Administration</li>
+                            <li>Mobile Device Management</li>
+                            <li>Customer Service Skills</li>
+                        </ul>
+                        <h4>Career Opportunities:</h4>
+                        <ul>
+                            <li>IT Support Technician</li>
+                            <li>Help Desk Analyst</li>
+                            <li>Desktop Support Specialist</li>
+                            <li>Field Service Technician</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="program-card" id="data" onclick="toggleProgramDetails('data-details')">
+                    <h3>Data Analytics</h3>
+                    <span class="program-duration">18 Months • 45 Credits</span>
+                    <p>Transform data into actionable insights using modern analytics tools. Learn Python, R, SQL, and visualization techniques for business intelligence.</p>
+                    <div class="program-details" id="data-details">
+                        <h4>Course Highlights:</h4>
+                        <ul>
+                            <li>Statistical Analysis & Modeling</li>
+                            <li>Data Visualization (Tableau, Power BI)</li>
+                            <li>Machine Learning Fundamentals</li>
+                            <li>Big Data Technologies</li>
+                            <li>Business Intelligence Systems</li>
+                        </ul>
+                        <h4>Career Opportunities:</h4>
+                        <ul>
+                            <li>Data Analyst</li>
+                            <li>Business Intelligence Analyst</li>
+                            <li>Data Scientist</li>
+                            <li>Reporting Specialist</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- APPLICATION PAGE -->
+    <section id="apply" class="page-content">
+        <div class="container">
+            <h2 class="section-title">Apply to WITS</h2>
+            <div class="success-message" id="applicationSuccess">
+                Thank you for your application! We'll review your submission and contact you within 5-7 business days.
+            </div>
+            <div class="form-container">
+                <form onsubmit="submitApplication(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First Name *</label>
+                            <input type="text" id="firstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name *</label>
+                            <input type="text" id="lastName" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number *</label>
+                            <input type="tel" id="phone" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="program">Preferred Program *</label>
+                            <select id="program" required>
+                                <option value="">Select a Program</option>
+                                <option value="network">Network Administration</option>
+                                <option value="cybersecurity">Cybersecurity</option>
+                                <option value="cloud">Cloud Computing</option>
+                                <option value="software">Software Development</option>
+                                <option value="support">IT Support Specialist</option>
+                                <option value="data">Data Analytics</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="startDate">Preferred Start Date</label>
+                            <select id="startDate">
+                                <option value="">Select Start Date</option>
+                                <option value="fall2024">Fall 2024</option>
+                                <option value="winter2025">Winter 2025</option>
+                                <option value="spring2025">Spring 2025</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="education">Highest Education Level</label>
+                            <select id="education">
+                                <option value="">Select Education Level</option>
+                                <option value="highschool">High School Diploma</option>
+                                <option value="college">College Diploma</option>
+                                <option value="bachelor">Bachelor's Degree</option>
+                                <option value="master">Master's Degree</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="experience">IT Experience</label>
+                            <select id="experience">
+                                <option value="">Select Experience Level</option>
+                                <option value="none">No Experience</option>
+                                <option value="1-2years">1-2 Years</option>
+                                <option value="3-5years">3-5 Years</option>
+                                <option value="5+years">5+ Years</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="motivation">Why do you want to study at WITS?</label>
+                        <textarea id="motivation" rows="4" placeholder="Tell us about your career goals and why you chose WITS..."></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">Submit Application</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- REQUIREMENTS PAGE -->
+    <section id="requirements" class="page-content">
+        <div class="container">
+            <h2 class="section-title">Admission Requirements</h2>
+            <div class="dashboard-grid">
+                <div class="dashboard-card">
+                    <h3>Academic Requirements</h3>
+                    <ul>
+                        <li>High School Diploma or equivalent</li>
+                        <li>Minimum 65% average in Grade 12</li>
+                        <li>English 40S (minimum 60%)</li>
+                        <li>Mathematics 40S recommended</li>
+                        <li>Previous IT experience an asset</li>
+                    </ul>
+                </div>
+                <div class="dashboard-card">
+                    <h3>Application Documents</h3>
+                    <ul>
+                        <li>Completed application form</li>
+                        <li>Official transcripts</li>
+                        <li>Personal statement</li>
+                        <li>Two letters of reference</li>
+                        <li>Portfolio (for some programs)</li>
+                    </ul>
+                </div>
+                <div class="dashboard-card">
+                    <h3>Important Dates</h3>
+                    <div class="grade-item">
+                        <span>Application Deadline (Fall):</span>
+                        <span class="grade">July 1st</span>
+                    </div>
+                    <div class="grade-item">
+                        <span>Application Deadline (Winter):</span>
+                        <span class="grade">November 1st</span>
+                    </div>
+                    <div class="grade-item">
+                        <span>Application Deadline (Spring):</span>
+                        <span class="grade">March 1st</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TUITION PAGE -->
+    <section id="tuition" class="page-content">
+        <div class="container">
+            <h2 class="section-title">Tuition & Fees</h2>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Program</th>
+                        <th>Duration</th>
+                        <th>Total Tuition</th>
+                        <th>Per Semester</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Network Administration</td>
+                        <td>2 Years</td>
+                        <td>$18,500</td>
+                        <td>$4,625</td>
+                    </tr>
+                    <tr>
+                        <td>Cybersecurity</td>
+                        <td>2 Years</td>
+                        <td>$19,500</td>
+                        <td>$4,875</td>
+                    </tr>
+                    <tr>
+                        <td>Cloud Computing</td>
+                        <td>18 Months</td>
+                        <td>$16,500</td>
+                        <td>$5,500</td>
+                    </tr>
+                    <tr>
+                        <td>Software Development</td>
+                        <td>2 Years</td>
+                        <td>$17,500</td>
+                        <td>$4,375</td>
+                    </tr>
+                    <tr>
+                        <td>IT Support Specialist</td>
+                        <td>1 Year</td>
+                        <td>$12,500</td>
+                        <td>$6,250</td>
+                    </tr>
+                    <tr>
+                        <td>Data Analytics</td>
+                        <td>18 Months</td>
+                        <td>$16,000</td>
+                        <td>$5,333</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="dashboard-grid">
+                <div class="dashboard-card">
+                    <h3>Additional Fees</h3>
+                    <div class="grade-item">
+                        <span>Application Fee:</span>
+                        <span>$150</span>
+                    </div>
+                    <div class="grade-item">
+                        <span>Technology Fee (per semester):</span>
+                        <span>$300</span>
+                    </div>
+                    <div class="grade-item">
+                        <span>Lab Fee (per semester):</span>
+                        <span>$200</span>
+                    </div>
+                    <div class="grade-item">
+                        <span>Student Services Fee:</span>
+                        <span>$150</span>
+                    </div>
+                </div>
+                <div class="dashboard-card">
+                    <h3>Payment Options</h3>
+                    <ul>
+                        <li>Pay in full (5% discount)</li>
+                        <li>Semester payment plan</li>
+                        <li>Monthly payment plan</li>
+                        <li>Financial aid available</li>
+                        <li>Government student loans accepted</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SCHOLARSHIPS PAGE -->
+    <section id="scholarships" class="page-content">
+        <div class="container">
+            <h2 class="section-title">Scholarships & Financial Aid</h2>
+            <div class="programs-grid">
+                <div class="program-card">
+                    <h3>Merit Scholarship</h3>
+                    <span class="program-duration">Up to $2,500</span>
+                    <p>Awarded to students with outstanding academic achievement (85%+ average).</p>
+                    <div class="program-details show">
+                        <h4>Eligibility:</h4>
+                        <ul>
+                            <li>Minimum 85% high school average</li>
+                            <li>Full-time enrollment</li>
+                            <li>Maintain 3.5 GPA</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="program-card">
+                    <h3>Indigenous Student Bursary</h3>
+                    <span class="program-duration">Up to $3,000</span>
+                    <p>Supporting Indigenous students pursuing IT education.</p>
+                    <div class="program-details show">
+                        <h4>Eligibility:</h4>
+                        <ul>
+                            <li>Indigenous heritage verification</li>
+                            <li>Financial need demonstration</li>
+                            <li>Community involvement</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="program-card">
+                    <h3>Women in Tech Scholarship</h3>
+                    <span class="program-duration">Up to $2,000</span>
+                    <p>Encouraging women to pursue careers in technology.</p>
+                    <div class="program-details show">
+                        <h4>Eligibility:</h4>
+                        <ul>
+                            <li>Female student</li>
+                            <li>Enrolled in any IT program</li>
+                            <li>Essay submission required</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FACILITIES PAGE -->
+    <section id="facilities" class="page-content">
+        <div class="container">
+            <h2 class="section-title">Campus Facilities</h2>
+            <div class="dashboard-grid">
+                <div class="dashboard-card">
+                    <h3>🏢 Modern Campus</h3>
+                    <p>Our state-of-the-art facility features contemporary learning spaces designed for collaborative and hands-on IT education.</p>
+                </div>
+                <div class="dashboard-card">
+                    <h3>📚 Learning Commons</h3>
+                    <p>24/7 study spaces with high-speed internet, printing services, and quiet zones for individual and group study.</p>
+                </div>
+                <div class="dashboard-card">
+                    <h3>🍕 Student Lounge</h3>
+                    <p>Relaxation area with vending machines, comfortable seating, and recreational activities for students to unwind.</p>
+                </div>
+                <div class="dashboard-card">
+                    <h3>🚗 Parking</h3>
+                    <p>Free parking available for all students, staff, and visitors with easy access to the main building.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- LABS PAGE -->
+    <section id="labs" class="page-content">
+        <div class="container">
+            <h2 class="section-title">Laboratory Information</h2>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Lab Name</th>
+                        <th>Room</th>
+                        <th>Capacity</th>
+                        <th>Equipment</th>
+                        <th>Programs</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Network Lab 1</td>
+                        <td>A101</td>
+                        <td>25 Workstations</td>
+                        <td>Cisco routers, switches, wireless APs</td>
+                        <td>Network Administration</td>
+                    </tr>
+                    <tr>
+                        <td>Network Lab 2</td>
+                        <td>A102</td>
+                        <td>25 Workstations</td>
+                        <td>Cisco routers, switches, wireless APs</td>
+                        <td>Network Administration</td>
+                    </tr>
+                    <tr>
+                        <td>Security Lab</td>
+                        <td>B201</td>
+                        <td>25 Workstations</td>
+                        <td>Penetration testing tools, security appliances</td>
+                        <td>Cybersecurity</td>
+                    </tr>
+                    <tr>
+                        <td>Software Dev Lab 1</td>
+                        <td>C301</td>
+                        <td>25 Workstations</td>
+                        <td>High-performance workstations, IDEs</td>
+                        <td>Software Development</td>
+                    </tr>
+                    <tr>
+                        <td>Software Dev Lab 2</td>
+                        <td>C302</td>
+                        <td>25 Workstations</td>
+                        <td>High-performance workstations, IDEs</td>
+                        <td>Software Development</td>
+                    </tr>
+                    <tr>
+                        <td>Cloud Computing Lab</td>
+                        <td>D401</td>
+                        <td>25 Workstations</td>
+                        <td>Cloud-connected workstations</td>
+                        <td>Cloud Computing</td>
+                    </tr>
+                    <tr>
+                        <td>General Purpose Lab</td>
+                        <td>E501</td>
+                        <td>25 Workstations</td>
+                        <td>Standard workstations, general software</td>
+                        <td>All Programs</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="dashboard-card" style="margin-top: 2rem;">
+                <h3>Lab Access Hours</h3>
+                <div class="grade-item">
+                    <span>Monday - Friday:</span>
+                    <span class="grade">7:00 AM - 10:00 PM</span>
+                </div>
+                <div class="grade-item">
+                    <span>Saturday:</span>
+                    <span class="grade">9:00 AM - 6:00 PM</span>
+                </div>
+                <div class="grade-item">
+                    <span>Sunday:</span>
+                    <span class="grade">12:00 PM - 8:00 PM</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- EVENTS PAGE -->
+    <section id="events" class="page-content">
+        <div class="container">
+            <h2 class="section-title">Upcoming Events</h2>
+            <div class="news-grid">
+                <div class="news-card">
+                    <div class="news-date">February 15, 2025</div>
+                    <div class="news-content">
+                        <h3>Tech Career Fair</h3>
+                        <p>Meet with local employers and explore internship and job opportunities in the IT field.</p>
+                    </div>
+                </div>
+                <div class="news-card">
+                    <div class="news-date">February 22, 2025</div>
+                    <div class="news-content">
+                        <h3>Cybersecurity Workshop</h3>
+                        <p>Free workshop on ethical hacking and penetration testing. Open to all students and the public.</p>
+                    </div>
+                </div>
+                <div class="news-card">
+                    <div class="news-date">March 1, 2025</div>
+                    <div class="news-content">
+                        <h3>Open House</h3>
+                        <p>Tour our facilities, meet instructors, and learn about our programs. Refreshments provided.</p>
+                    </div>
+                </div>
+                <div class="news-card">
+                    <div class="news-date">March 10, 2025</div>
+                    <div class="news-content">
+                        <h3>Student Project Showcase</h3>
+                        <p>Students present their capstone projects to industry professionals and fellow students.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CLUBS PAGE -->
+    <section id="clubs" class="page-content">
+        <div class="container">
+            <h2 class="section-title">Student Clubs & Organizations</h2>
+            <div class="programs-grid">
+                <div class="program-card">
+                    <h3>🔒 Cybersecurity Club</h3>
+                    <p>Practice ethical hacking, participate in CTF competitions, and stay current with security trends.</p>
+                    <div class="program-details show">
+                        <h4>Activities:</h4>
+                        <ul>
+                            <li>Weekly hack challenges</li>
+                            <li>Guest speaker events</li>
+                            <li>Regional competitions</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="program-card">
+                    <h3>💻 Coding Club</h3>
+                    <p>Collaborate on programming projects, learn new languages, and participate in hackathons.</p>
+                    <div class="program-details show">
+                        <h4>Activities:</h4>
+                        <ul>
+                            <li>Monthly hackathons</li>
+                            <li>Open source contributions</li>
+                            <li>Programming workshops</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="program-card">
+                    <h3>🌐 Networking Society</h3>
+                    <p>Build and configure networks, prepare for industry certifications, and network with professionals.</p>
+                    <div class="program-details show">
+                        <h4>Activities:</h4>
+                        <ul>
+                            <li>Lab build sessions</li>
+                            <li>Certification study groups</li>
+                            <li>Industry networking events</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="program-card">
+                    <h3>👥 Women in Tech</h3>
+                    <p>Support and encourage women in technology through mentorship and professional development.</p>
+                    <div class="program-details show">
+                        <h4>Activities:</h4>
+                        <ul>
+                            <li>Mentorship programs</li>
+                            <li>Professional workshops</li>
+                            <li>Networking luncheons</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- LOGIN PAGE -->
+    <section id="login" class="page-content">
+        <div class="container">
+            <h2 class="section-title">Student Portal Login</h2>
+            <div class="form-container">
+                <form onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label for="studentId">Student ID</label>
+                        <input type="text" id="studentId" placeholder="Enter your student ID" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" placeholder="Enter your password" required>
+                    </div>
+                    <button type="submit" class="submit-btn">Login to Portal</button>
+                </form>
+                <p style="margin-top: 1rem; text-align: center; color: #666;">
+                    Demo credentials: ID: <strong>S2024001</strong> | Password: <strong>demo123</strong>
+                </p>
+                <p style="margin-top: 0.5rem; text-align: center;">
+                    <a href="#" style="color: #667eea;">Forgot your password?</a> | 
+                    <a href="#" style="color: #667eea;">Need help?</a>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- DASHBOARD PAGE -->
+    <section id="dashboard" class="page-content">
+        <div class="container">
+            <h2 class="section-title">Student Dashboard</h2>
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <h3>Welcome back, John Doe!</h3>
+                <p>Student ID: S2024001 | Program: Network Administration</p>
+            </div>
+            <div class="dashboard-grid">
+                <div class="dashboard-card">
+                    <h3>📅 Quick Actions</h3>
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        <button class="cta-button" onclick="showPage('schedule')" style="width: 100%; padding: 10px;">View Schedule</button>
+                        <button class="cta-button" onclick="showPage('grades')" style="width: 100%; padding: 10px;">Check Grades</button>
+                        <button class="cta-button" onclick="alert('Email sent to instructor!')" style="width: 100%; padding: 10px;">Email Instructor</button>
+                    </div>
+                </div>
+                <div class="dashboard-card">
+                    <h3>📊 Academic Progress</h3>
+                    <div class="grade-item">
+                        <span>Current GPA:</span>
+                        <span class="grade">3.75</span>
+                    </div>
+                    <div class="grade-item">
+                        <span>Credits Completed:</span>
+                        <span>28/60</span>
+                    </div>
+                    <div class="grade-item">
+                        <span>Expected Graduation:</span>
+                        <span>June 2026</span>
+                    </div>
+                </div>
+                <div class="dashboard-card">
+                    <h3>🔔 Recent Announcements</h3>
+                    <div style="font-size: 0.9rem; color: #666;">
+                        <p><strong>Lab Schedule Change:</strong> Network Lab 1 will be closed for maintenance on Feb 20th.</p>
+                        <p><strong>Assignment Due:</strong> NETW-201 Project due February 25th.</p>
+                    </div>
+                </div>
+                <div class="dashboard-card">
+                    <h3>📚 Current Courses</h3>
+                    <div style="font-size: 0.9rem;">
+                        <div class="grade-item">
+                            <span>NETW-201: Wireless Networks</span>
+                            <span class="grade">A-</span>
+                        </div>
+                        <div class="grade-item">
+                            <span>NETW-202: Network Security</span>
+                            <span class="grade">B+</span>
+                        </div>
+                        <div class="grade-item">
+                            <span>NETW-301: Advanced Routing</span>
+                            <span class="grade">A</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- GRADES PAGE -->
+    <section id="grades" class="page-content">
+        <div class="container">
+            <h2 class="section-title">Grade Report</h2>
+            <div class="dashboard-card" style="margin-bottom: 2rem;">
+                <h3>Current Semester - Winter 2025</h3>
+                <div class="grade-item">
+                    <span>Overall GPA:</span>
+                    <span class="grade">3.75</span>
+                </div>
+            </div>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Course Code</th>
+                        <th>Course Name</th>
+                        <th>Credits</th>
+                        <th>Grade</th>
+                        <th>Grade Points</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>NETW-201</td>
+                        <td>Wireless Networks</td>
+                        <td>3</td>
+                        <td>A-</td>
+                        <td>3.7</td>
+                    </tr>
+                    <tr>
+                        <td>NETW-202</td>
+                        <td>Network Security</td>
+                        <td>4</td>
+                        <td>B+</td>
+                        <td>3.3</td>
+                    </tr>
+                    <tr>
+                        <td>NETW-301</td>
+                        <td>Advanced Routing</td>
+                        <td>4</td>
+                        <td>A</td>
+                        <td>4.0</td>
+                    </tr>
+                    <tr>
+                        <td>COMM-150</td>
+                        <td>Technical Communication</td>
+                        <td>2</td>
+                        <td>A-</td>
+                        <td>3.7</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- SCHEDULE PAGE -->
+    <section id="schedule" class="page-content">
+        <div class="container">
+            <h2 class="section-title">Class Schedule</h2>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Monday</th>
+                        <th>Tuesday</th>
+                        <th>Wednesday</th>
+                        <th>Thursday</th>
+                        <th>Friday</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>8:00-9:30</strong></td>
+                        <td>NETW-201<br><small>A101</small></td>
+                        <td></td>
+                        <td>NETW-201<br><small>A101</small></td>
+                        <td></td>
+                        <td>NETW-301<br><small>A102</small></td>
+                    </tr>
+                    <tr>
+                        <td><strong>10:00-11:30</strong></td>
+                        <td>NETW-202<br><small>B201</small></td>
+                        <td>COMM-150<br><small>LH-A</small></td>
+                        <td>NETW-202<br><small>B201</small></td>
+                        <td>COMM-150<br><small>LH-A</small></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><strong>12:00-1:30</strong></td>
+                        <td></td>
+                        <td>NETW-301<br><small>A102</small></td>
+                        <td></td>
+                        <td>NETW-301<br><small>A102</small></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><strong>2:00-3:30</strong></td>
+                        <td>Lab Time<br><small>A101</small></td>
+                        <td></td>
+                        <td>Lab Time<br><small>A101</small></td>
+                        <td></td>
+                        <td>Lab Time<br><small>A102</small></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- NEWS PAGE -->
+    <section id="news" class="page-content">
+        <div class="container">
+            <h2 class="section-title">Latest News & Updates</h2>
+            <div class="news-grid">
+                <div class="news-card">
+                    <div class="news-date">January 15, 2025</div>
+                    <div class="news-content">
+                        <h3>New Cybersecurity Lab Opens</h3>
+                        <p>WITS unveiled its cutting-edge cybersecurity lab featuring penetration testing environments and incident response simulation tools. The lab includes isolated network segments for safe testing and state-of-the-art security appliances.</p>
+                    </div>
+                </div>
+                <div class="news-card">
+                    <div class="news-date">December 28, 2024</div>
+                    <div class="news-content">
+                        <h3>Student Team Wins Regional Competition</h3>
+                        <p>Our Network Administration students placed first in the Manitoba IT Skills Competition, showcasing their expertise in network design and troubleshooting. The team will represent Manitoba at the national championship.</p>
+                    </div>
+                </div>
+                <div class="news-card">
+                    <div class="news-date">December 10, 2024</div>
+                    <div class="news-content">
+                        <h3>Partnership with Major Tech Companies</h3>
+                        <p>WITS announces new partnerships with leading technology companies to enhance student job placement rates and internship opportunities. Partners include local IT firms and major cloud providers.</p>
+                    </div>
+                </div>
+                <div class="news-card">
+                    <div class="news-date">November 22, 2024</div>
+                    <div class="news-content">
+                        <h3>Cloud Computing Program Expansion</h3>
+                        <p>Due to high demand, WITS is expanding its Cloud Computing program with additional AWS and Azure certification tracks. New cohorts will begin in Spring 2025.</p>
+                    </div>
+                </div>
+                <div class="news-card">
+                    <div class="news-date">November 5, 2024</div>
+                    <div class="news-content">
+                        <h3>Graduate Employment Rate Reaches 95%</h3>
+                        <p>WITS reports exceptional graduate outcomes with 95% of students finding employment within 6 months of graduation. Average starting salary has increased by 12% over the previous year.</p>
+                    </div>
+                </div>
+                <div class="news-card">
+                    <div class="news-date">October 18, 2024</div>
+                    <div class="news-content">
+                        <h3>New Women in Tech Scholarship</h3>
+                        <p>WITS launches the Women in Tech Scholarship program, providing up to $2,000 in financial support for female students pursuing careers in technology fields.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT PAGE -->
+    <section id="contact" class="page-content">
+        <div class="container">
+            <h2 class="section-title">Contact Us</h2>
+            <div class="dashboard-grid">
+                <div class="dashboard-card">
+                    <h3>📍 Campus Location</h3>
+                    <p><strong>Winnipeg Institute of Technology School</strong></p>
+                    <p>130 Henlow Bay<br>Winnipeg, MB R3Y 1G4<br>Canada</p>
+                    <p><strong>Phone:</strong> (204) 632-2070<br>
+                    <strong>Email:</strong> info@wits.edu<br>
+                    <strong>Website:</strong> www.wits.edu</p>
+                </div>
+                <div class="dashboard-card">
+                    <h3>🕒 Office Hours</h3>
+                    <div class="grade-item">
+                        <span>Monday - Friday:</span>
+                        <span>8:00 AM - 5:00 PM</span>
+                    </div>
+                    <div class="grade-item">
+                        <span>Saturday:</span>
+                        <span>9:00 AM - 2:00 PM</span>
+                    </div>
+                    <div class="grade-item">
+                        <span>Sunday:</span>
+                        <span>Closed</span>
+                    </div>
+                </div>
+                <div class="dashboard-card">
+                    <h3>📞 Department Contacts</h3>
+                    <div class="grade-item">
+                        <span>Admissions:</span>
+                        <span>(204) 632-2071</span>
+                    </div>
+                    <div class="grade-item">
+                        <span>Student Services:</span>
+                        <span>(204) 632-2072</span>
+                    </div>
+                    <div class="grade-item">
+                        <span>Financial Aid:</span>
+                        <span>(204) 632-2073</span>
+                    </div>
+                    <div class="grade-item">
+                        <span>IT Support:</span>
+                        <span>(204) 632-2074</span>
+                    </div>
+                </div>
+                <div class="dashboard-card">
+                    <h3>✉️ Send Us a Message</h3>
+                    <form onsubmit="sendMessage(event)" style="display: flex; flex-direction: column; gap: 1rem;">
+                        <input type="text" placeholder="Your Name" required style="padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                        <input type="email" placeholder="Your Email" required style="padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                        <textarea placeholder="Your Message" rows="3" required style="padding: 10px; border: 1px solid #ddd; border-radius: 5px; resize: vertical;"></textarea>
+                        <button type="submit" class="submit-btn" style="padding: 10px;">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Contact Information</h3>
+                    <p>📍 130 Henlow Bay, Winnipeg, MB R3Y 1G4</p>
+                    <p>📞 (204) 632-2070</p>
+                    <p>✉️ info@wits.edu</p>
+                    <p>🌐 www.wits.edu</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <a href="#" onclick="showPage('programs')">Programs</a>
+                    <a href="#" onclick="showPage('apply')">Admissions</a>
+                    <a href="#" onclick="showPage('dashboard')">Student Services</a>
+                    <a href="#" onclick="showPage('facilities')">Campus</a>
+                    <a href="#" onclick="showPage('contact')">Contact</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Student Resources</h3>
+                    <a href="#" onclick="showPage('login')">Student Portal</a>
+                    <a href="#" onclick="showPage('schedule')">Class Schedules</a>
+                    <a href="#" onclick="showPage('grades')">Grades</a>
+                    <a href="#" onclick="showPage('scholarships')">Financial Aid</a>
+                    <a href="#" onclick="showPage('contact')">IT Support</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Connect With Us</h3>
+                    <a href="#">Facebook</a>
+                    <a href="#">Twitter</a>
+                    <a href="#">LinkedIn</a>
+                    <a href="#">Instagram</a>
+                    <a href="#">YouTube</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Winnipeg Institute of Technology School. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Page Navigation
+        function showPage(pageId) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page-content');
+            pages.forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show selected page
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) {
+                targetPage.classList.add('active');
+            }
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+            
+            // Close mobile menu
+            document.getElementById('navLinks').classList.remove('active');
+        }
+
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('active');
+        }
+
+        // Program Details Toggle
+        function toggleProgramDetails(detailsId) {
+            const details = document.getElementById(detailsId);
+            details.classList.toggle('show');
+        }
+
+        // Scroll to specific program
+        function scrollToProgram(programId) {
+            setTimeout(() => {
+                const programElement = document.getElementById(programId);
+                if (programElement) {
+                    programElement.scrollIntoView({ behavior: 'smooth' });
+                    // Auto-expand details
+                    const detailsElement = programElement.querySelector('.program-details');
+                    if (detailsElement && !detailsElement.classList.contains('show')) {
+                        detailsElement.classList.add('show');
+                    }
+                }
+            }, 100);
+        }
+
+        // Application Form Handler
+        function submitApplication(event) {
+            event.preventDefault();
+            
+            // Get form data
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const email = document.getElementById('email').value;
+            const program = document.getElementById('program').value;
+            
+            // Show success message
+            const successMessage = document.getElementById('applicationSuccess');
+            successMessage.innerHTML = `
+                <strong>Thank you, ${firstName} ${lastName}!</strong><br>
+                Your application for ${document.getElementById('program').options[document.getElementById('program').selectedIndex].text} has been submitted successfully.<br>
+                A confirmation email has been sent to ${email}.<br>
+                We'll review your application and contact you within 5-7 business days.
+            `;
+            successMessage.classList.add('show');
+            
+            // Reset form
+            event.target.reset();
+            
+            // Scroll to success message
+            successMessage.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Login Handler
+        function handleLogin(event) {
+            event.preventDefault();
+            
+            const studentId = document.getElementById('studentId').value;
+            const password = document.getElementById('password').value;
+            
+            // Demo login check
+            if (studentId === 'S2024001' && password === 'demo123') {
+                alert('Login successful! Redirecting to dashboard...');
+                showPage('dashboard');
+            } else {
+                alert('Invalid credentials. Please try:\nStudent ID: S2024001\nPassword: demo123');
+            }
+        }
+
+        // Contact Form Handler
+        function sendMessage(event) {
+            event.preventDefault();
+            alert('Thank you for your message! We\'ll get back to you within 24 hours.');
+            event.target.reset();
+        }
+
+        // Smooth scrolling for anchor links
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add smooth scrolling to all links
+            const links = document.querySelectorAll('a[href^="#"]');
+            links.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    const href = this.getAttribute('href');
+                    if (href.startsWith('#') && href.length > 1) {
+                        e.preventDefault();
+                        const target = document.querySelector(href);
+                        if (target) {
+                            target.scrollIntoView({
+                                behavior: 'smooth'
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Auto-hide mobile menu when clicking outside
+            document.addEventListener('click', function(event) {
+                const navLinks = document.getElementById('navLinks');
+                const menuToggle = document.querySelector('.mobile-menu-toggle');
+                
+                if (!navLinks.contains(event.target) && !menuToggle.contains(event.target)) {
+                    navLinks.classList.remove('active');
+                }
+            });
+
+            // Dynamic year in footer
+            const currentYear = new Date().getFullYear();
+            const footerYear = document.querySelector('.footer-bottom p');
+            if (footerYear) {
+                footerYear.innerHTML = `&copy; ${currentYear} Winnipeg Institute of Technology School. All rights reserved.`;
+            }
+        });
+
+        // Add some interactive features
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                background: ${type === 'success' ? '#28a745' : '#dc3545'};
+                color: white;
+                padding: 1rem 2rem;
+                border-radius: 8px;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+                z-index: 10000;
+                animation: slideInRight 0.3s ease;
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOutRight 0.3s ease';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+
+        // Add CSS for notifications
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideInRight {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOutRight {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Enhanced interactivity
+        function quickApply(programName) {
+            showPage('apply');
+            setTimeout(() => {
+                const programSelect = document.getElementById('program');
+                const programOptions = {
+                    'Network Administration': 'network',
+                    'Cybersecurity': 'cybersecurity',
+                    'Cloud Computing': 'cloud',
+                    'Software Development': 'software',
+                    'IT Support Specialist': 'support',
+                    'Data Analytics': 'data'
+                };
+                if (programOptions[programName]) {
+                    programSelect.value = programOptions[programName];
+                }
+            }, 100);
+        }
+
+        // Add hover effects and animations
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add program quick apply buttons
+            const programCards = document.querySelectorAll('.program-card');
+            programCards.forEach(card => {
+                const programName = card.querySelector('h3').textContent;
+                if (!card.querySelector('.quick-apply-btn')) {
+                    const quickApplyBtn = document.createElement('button');
+                    quickApplyBtn.className = 'cta-button';
+                    quickApplyBtn.textContent = 'Quick Apply';
+                    quickApplyBtn.style.cssText = 'margin-top: 1rem; padding: 8px 20px; font-size: 0.9rem;';
+                    quickApplyBtn.onclick = () => quickApply(programName);
+                    card.appendChild(quickApplyBtn);
+                }
+            });
+
+            // Add search functionality
+            if (!document.getElementById('searchBox')) {
+                const searchContainer = document.createElement('div');
+                searchContainer.innerHTML = `
+                    <div style="position: relative; margin: 2rem 0; text-align: center;">
+                        <input type="text" id="searchBox" placeholder="Search programs, courses, or information..." 
+                               style="width: 100%; max-width: 500px; padding: 12px 40px 12px 15px; border: 2px solid #e1e5e9; border-radius: 25px; font-size: 1rem;">
+                        <span style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: #999;">🔍</span>
+                    </div>
+                `;
+                
+                const programsSection = document.getElementById('programs');
+                if (programsSection) {
+                    const container = programsSection.querySelector('.container');
+                    const title = container.querySelector('.section-title');
+                    title.parentNode.insertBefore(searchContainer, title.nextSibling);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+                        
